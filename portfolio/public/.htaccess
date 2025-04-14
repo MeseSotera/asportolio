@@ -1,12 +1,21 @@
-
+# Spécifier le fichier d'index principal
 DirectoryIndex index.php
 
+# Activer le moteur de réécriture
 RewriteEngine On
 
+# Exclure les fichiers existants (comme CSS, JS, images, etc.) des règles de réécriture
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_URI} !\.(css|js|png|jpg|jpeg|gif|ico|svg|webp|ttf|woff|woff2|eot)$
+
+# Rediriger toutes les autres requêtes vers index.php avec les paramètres
 RewriteRule ^(.*)$ index.php?url=$1 [L,QSA]
 
+# Ajouter des en-têtes de cache pour les fichiers statiques
 <FilesMatch "\.(css|js|png|jpg|jpeg|gif|ico|svg|webp|ttf|woff|woff2|eot)$">
     Header set Cache-Control "max-age=2592000, public"
 </FilesMatch>
+
+# Gérer les erreurs (facultatif)
+ErrorDocument 404 /404.php
